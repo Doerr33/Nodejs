@@ -39,10 +39,16 @@ app.use(function (req, res, next) {
 // 使用 .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
 app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api\//] }))
 
-
+// =================路由============================
 // 导入并注册用户路由模块
 const userRouter = require('./router/user')
 app.use('/api', userRouter)
+
+
+// 导入并使用用户信息路由模块
+const userinfoRouter = require('./router/userinfo')
+// 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
+app.use('/my', userinfoRouter)
 
 
 // 路由之后定义错误中间件
