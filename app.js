@@ -16,6 +16,10 @@ const cors = require('cors')
 // 将 cors 注册为全局中间件
 app.use(cors())
 
+// 托管静态资源文件
+app.use('/uploads', express.static('./uploads'))
+
+
 // 配置解析 application/x-www-form-urlencoded 格式的表单数据的中间件：
 app.use(express.urlencoded({ extended: false }))
 
@@ -49,6 +53,19 @@ app.use('/api', userRouter)
 const userinfoRouter = require('./router/userinfo')
 // 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
 app.use('/my', userinfoRouter)
+
+
+// 导入并使用文章分类路由模块
+const artCateRouter = require('./router/artcate')
+// 为文章分类的路由挂载统一的访问前缀 /my/article
+app.use('/my/article', artCateRouter)
+
+
+// 导入并使用文章路由模块
+const articleRouter = require('./router/article')
+// 为文章的路由挂载统一的访问前缀 /my/article
+app.use('/my/article', articleRouter)
+
 
 
 // 路由之后定义错误中间件
